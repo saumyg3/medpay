@@ -1,5 +1,7 @@
+using MedPay.Core.Services;
 using MedPay.Infrastructure.Data;
 using MedPay.Infrastructure.Seed;
+using MedPay.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,9 +13,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MedPayDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MedPayDb")));
 
+builder.Services.AddScoped<IClaimValidationService, ClaimValidationService>();
+
 var app = builder.Build();
 
-// Run seeder on startup in Development
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<MedPayDbContext>();
@@ -31,3 +34,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
