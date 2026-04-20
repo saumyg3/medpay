@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MedPay.Api/MedPay.Api.csproj" />
+  <Project Path="MedPay.Core/MedPay.Core.csproj" />
+  <Project Path="MedPay.Infrastructure/MedPay.Infrastructure.csproj" />
+  <Project Path="MedPay.Tests/MedPay.Tests.csproj" />
+</Solution>
