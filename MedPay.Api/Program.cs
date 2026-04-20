@@ -14,6 +14,7 @@ builder.Services.AddDbContext<MedPayDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MedPayDb")));
 
 builder.Services.AddScoped<IClaimValidationService, ClaimValidationService>();
+builder.Services.AddScoped<IAdjudicationService, AdjudicationService>();
 
 var app = builder.Build();
 
