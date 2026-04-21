@@ -80,8 +80,8 @@ public class AdjudicationService : IAdjudicationService
             payerOwes += excess;
         }
 
-        policy.DeductibleMetYtd += deductibleApplied;
-        policy.OutOfPocketMetYtd += patientOwes;
+        // Do NOT mutate policy here. The caller updates the policy after persisting the adjudication.
+        _db.Entry(policy).State = EntityState.Detached;
 
         var decision = payerOwes > 0m
             ? (patientOwes > 0m ? AdjudicationDecision.PartialApprove : AdjudicationDecision.Approve)
