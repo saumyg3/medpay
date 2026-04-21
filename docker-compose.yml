@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: medpay-postgres
+    environment:
+      POSTGRES_USER: medpay
+      POSTGRES_PASSWORD: medpay_local_password
+      POSTGRES_DB: medpay
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medpay"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medpay-api
+    ports:
+      - "5110:8080"
+    environment:
+      ConnectionStrings__MedPayDb: "Host=postgres;Database=medpay;Username=medpay;Password=medpay_local_password"
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
