@@ -4,8 +4,6 @@ A healthcare claim processing API demonstrating real insurance adjudication logi
 
 **Live demo:** https://medpay-api.onrender.com
 
-[![CI](https://github.com/saumyg3/medpay/actions/workflows/ci.yml/badge.svg)](https://github.com/saumyg3/medpay/actions/workflows/ci.yml)
-
 ## Why this project exists
 
 Healthcare payment processing involves nuanced business rules that most tutorial projects skip. A real claim is not just "charge the card" — it flows through validation, policy lookup, adjudication math that splits costs between the payer and the patient, and ledger posting. This project models that flow end-to-end.
