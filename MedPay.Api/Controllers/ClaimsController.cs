@@ -106,6 +106,25 @@ public class ClaimsController : ControllerBase
         return Ok(new AdjudicationDto(adj.Id, adj.ClaimId, adj.Decision, adj.AdjudicatedAt, adj.PayerResponsibility, adj.PatientResponsibility, adj.AdjustedAmount, adj.DenialReason));
     }
 
+    [HttpGet("{id:guid}/adjudication")]
+    public async Task<IActionResult> GetAdjudication(Guid id, CancellationToken ct)
+    {
+        var adj = await _db.Adjudications.AsNoTracking()
+            .FirstOrDefaultAsync(a => a.ClaimId == id, ct);
+        if (adj is null) return NotFound("Claim has not been adjudicated yet.");
+
+        return Ok(new AdjudicationDto(
+            adj.Id,
+            adj.ClaimId,
+            adj.Decision,
+            adj.AdjudicatedAt,
+            adj.PayerResponsibility,
+            adj.PatientResponsibility,
+            adj.AdjustedAmount,
+            adj.DenialReason
+        ));
+    }
+
     private static ClaimDto ToDto(Claim c)
     {
         var lines = c.LineItems.Select(li => new ClaimLineItemDto(li.CptCode, li.Description, li.Quantity, li.ChargeAmount)).ToList();
