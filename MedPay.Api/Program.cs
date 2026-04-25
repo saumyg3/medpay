@@ -10,6 +10,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Support both Npgsql-format connection strings and Render/Heroku URL format
 var rawConn = builder.Configuration.GetConnectionString("MedPayDb") ?? Environment.GetEnvironmentVariable("DATABASE_URL");
 if (!string.IsNullOrEmpty(rawConn) && rawConn.StartsWith("postgres"))
@@ -40,6 +50,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapControllers();
